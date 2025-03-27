@@ -8,7 +8,7 @@ jobs:
   deploy:
     name: SSH Deploy to DO Droplet
     runs-on: ubuntu-latest
-
+    environment: Production
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
