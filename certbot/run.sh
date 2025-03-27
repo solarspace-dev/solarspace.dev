@@ -9,6 +9,7 @@ certbot certonly --webroot -w /var/www/certbot \
   --no-eff-email \
   --non-interactive \
   --force-renewal \
+  --cert-name "$DOMAIN_NAME" \
   -d "$DOMAIN_NAME" \
   -d "www.$DOMAIN_NAME"
 
