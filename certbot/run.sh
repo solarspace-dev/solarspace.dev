@@ -13,4 +13,12 @@ certbot certonly --webroot -w /var/www/certbot \
   -d "$DOMAIN_NAME" \
   -d "www.$DOMAIN_NAME"
 
+# Switch symlink to point to real cert
+REAL_CERT_DIR="/etc/letsencrypt/live/${DOMAIN_NAME}"
+LINK_CERT_DIR="/etc/letsencrypt/use/${DOMAIN_NAME}"
+
+echo "Switching symlink to real certificate..."
+rm -f "$LINK_CERT_DIR"
+ln -s "$REAL_CERT_DIR" "$LINK_CERT_DIR"
+
 echo "Certbot finished. Please run: docker exec nginx nginx -s reload"
