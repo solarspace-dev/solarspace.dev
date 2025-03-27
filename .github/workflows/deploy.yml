@@ -1,0 +1,33 @@
+name: Deploy to DigitalOcean
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: SSH Deploy to DO Droplet
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Copy files to droplet via rsync
+        run: |
+          rsync -avz --delete -e "ssh -o StrictHostKeyChecking=no -T" ./ ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/app
+
+      - name: SSH into droplet and deploy
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ~/app
+            export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
+            export EMAIL_ADDRESS=${{ vars.EMAIL_ADDRESS }}
+            docker compose down
+            docker compose up --build -d
+          EOF

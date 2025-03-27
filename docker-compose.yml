@@ -1,0 +1,61 @@
+services:
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    container_name: app
+    restart: always
+    expose:
+      - "3000"
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - EMAIL_ADDRESS=${EMAIL_ADDRESS}
+    networks:
+      - web
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: nginx
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    entrypoint: /start.sh
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - EMAIL_ADDRESS=${EMAIL_ADDRESS}
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/default.conf
+      - ./nginx/start.sh:/start.sh
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/www/certbot
+    networks:
+      - web
+    restart: always
+
+  certbot:
+    image: certbot/certbot
+    container_name: certbot
+    depends_on:
+      - nginx
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/www/certbot
+      - ./certbot/run.sh:/run.sh
+    environment:
+      - DOMAIN_NAME=${DOMAIN_NAME}
+      - EMAIL_ADDRESS=${EMAIL_ADDRESS}
+    entrypoint: /run.sh
+    networks:
+      - web
+
+networks:
+  web:
+    driver: bridge
+
+volumes:
+  certbot-etc:
+  certbot-var:
