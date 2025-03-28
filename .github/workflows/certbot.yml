@@ -18,9 +18,10 @@ jobs:
       - name: SSH into droplet and run certbot
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+            set -e
             cd ~/app
             export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
             export EMAIL_ADDRESS=${{ vars.EMAIL_ADDRESS }}
-            docker compose --profile manual run certbot
+            docker compose --profile manual run certbot || true
             docker exec nginx nginx -s reload
           EOF
