@@ -5,7 +5,7 @@ import { OAuthApp } from '@octokit/oauth-app';
 
 declare module "express-session" {
   interface SessionData {
-    accessToken?: string;
+    githubToken: string;
   }
 }
 
@@ -26,7 +26,7 @@ app.use(
   session({
     secret: process.env.SESSION_SECRET!,
     resave: false,
-    saveUninitialized: true,
+    saveUninitialized: false,
   })
 );
 
@@ -34,61 +34,49 @@ app.use(
 app.get("/", (req, res) => {
   res.send(`
     <h1>Login with GitHub</h1>
-    <a href="/login">Login</a>
+    <a href="/space/RaoulSchaffranek/theredguild-devcontainer">Create Space</a>
   `);
 });
 
-// Step 1: Redirect user to GitHub
-app.get("/login", (req, res) => {
-  const params = new URLSearchParams({
-    client_id: process.env.GH_CLIENT_ID!,
-    scope: "public_repo codespace",
-  });
+app.get("/space/:owner/:repo", async (req, res) => {
+  const octokit = await githubLogin(req, res);
+  const { owner, repo } = req.params;
 
-  res.redirect(`https://github.com/login/oauth/authorize?${params.toString()}`);
-});
-
-// Step 2: GitHub redirects back with `code`
-app.get("/callback", async (req, res) => {
-  const code = req.query.code as string;
-   if (!code) {
-    res.status(400).send("Missing code");
-    return;
-   }
-
+  // Check if the user already has a code space for this repo
+  let webUrl;
   try {
-    // Exchange code for access token
-    const { authentication } = await oauthApp.createToken({ code })
-    req.session.accessToken = authentication.token;
-    res.redirect("/repos");
-  } catch (err) {
-    console.error("OAuth error:", err);
-    res.status(500).send("OAuth error");
-  }
-});
-
-// Step 3: Use Octokit to fetch user's repos
-app.get("/repos", async (req, res) => {
-  const token = req.session.accessToken;
-  if (!token) return res.redirect("/");
-
-  try {
-    const octokit = new Octokit({ auth: token });
-
-    const response = await octokit.request("GET /user/repos", {
-      headers: {
-        Accept: "application/vnd.github+json",
-      },
+    const response = await octokit.request('GET /repos/{owner}/{repo}/codespaces', {
+      owner,
+      repo,
     });
-
-    const repos = response.data as any[];
-    const list = repos.map((r) => `<li>${r.full_name}</li>`).join("");
-
-    res.send(`<h2>Your Repos</h2><ul>${list}</ul><a href="/logout">Logout</a>`);
-  } catch (err: any) {
-    console.error("Fetch repos error:", err);
-    res.status(500).send("Failed to fetch repos");
+    if (response.data.total_count > 0) {
+      const codespace = response.data.codespaces[0];
+      webUrl = codespace.web_url;
+    }
+  } catch (error) {
+    console.error("Error fetching/creating codespace:", error);
   }
+
+  if (webUrl === undefined) {
+    // If not code space exists, create a new one
+    try {
+      const response = await octokit.request('POST /repos/{owner}/{repo}/codespaces', {
+        owner,
+        repo,
+        ref: "main",
+        retention_period_minutes: 60 * 24, // 24 hours
+      });
+      webUrl = response.data.web_url;
+    } catch (error) {
+      console.error("Error fetching/creating codespace:", error);
+    }
+  }
+  if (!webUrl) {
+    res.status(500).send("Internal Server Error");
+    return;
+  }
+
+  res.send(`<iframe src="${webUrl}" width="100%" height="100%" style="border: none;"></iframe>`)
 });
 
 // Logout
@@ -106,4 +94,44 @@ function assertEnvVar(name: string){
   if (!(name in process.env)) {
     throw new Error(`Environment variable ${name} is required`);
   }
+}
+
+// Middleware for GitHub OAuth authentication
+async function githubLogin(req: express.Request, res: express.Response) : Promise<Octokit> {
+  const auth_code = req.query.code;
+
+  // If the user is returning from GitHub auth page with an auth code
+  // we exchange it for an access token and store it in the session
+  if (typeof auth_code === "string") {
+    const { authentication } = await oauthApp.createToken({ code: auth_code });
+    req.session.githubToken = authentication.token;
+    req.session.save((err) => {
+      if (err) {
+        console.error("Error saving session:", err);
+      }
+    });
+  }
+
+  // If the user is not authenticated, we redirect her to GitHub for authentication
+  if (!auth_code && !req.session.githubToken) {
+    const redirectUri = req.originalUrl;
+    res.redirect(githubLoginUrl(redirectUri));
+    res.end();
+    // We throw an error here because the function must return a value
+    // However, the response has already been sent to the client
+    throw new Error("Redirecting to GitHub login");
+  }
+
+  // If the user is authenticated, return the octokit instance
+  const octokit = new Octokit({ auth: req.session.githubToken });
+  return octokit;
+}
+
+function githubLoginUrl(redirect_uri: string) : string {
+  const params = new URLSearchParams({
+    client_id: process.env.GH_CLIENT_ID!,
+    scope: "public_repo codespace",
+    redirect_uri,
+  });
+  return `https://github.com/login/oauth/authorize?${params.toString()}`;
 }
