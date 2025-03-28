@@ -10,6 +10,11 @@ services:
     environment:
       - DOMAIN_NAME=${DOMAIN_NAME}
       - EMAIL_ADDRESS=${EMAIL_ADDRESS}
+      - GH_APP_ID=${GH_APP_ID},
+      - GH_PRIVATE_KEY=${GH_PRIVATE_KEY},
+      - GH_CLIENT_ID=${GH_CLIENT_ID},
+      - GH_CLIENT_SECRET=${GH_CLIENT_SECRET}
+      - SESSION_SECRET=${SESSION_SECRET}
     networks:
       - web
 
