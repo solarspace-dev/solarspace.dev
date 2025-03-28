@@ -42,7 +42,7 @@ app.get("/", (req, res) => {
 app.get("/login", (req, res) => {
   const params = new URLSearchParams({
     client_id: process.env.GH_CLIENT_ID!,
-    scope: "read:user public_repo public_repo",
+    scope: "public_repo codespace",
   });
 
   res.redirect(`https://github.com/login/oauth/authorize?${params.toString()}`);
