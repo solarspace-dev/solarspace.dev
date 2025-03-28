@@ -1,8 +1,7 @@
-name: Run Certbot
+name: Run Certbot and restart Nginx
 
 on:
-  push:
-    branches: [main]
+  workflow_dispatch:
 
 jobs:
   deploy:
