@@ -9,6 +9,7 @@ declare module "express-session" {
   }
 }
 
+assertEnvVar("DOMAIN_NAME");
 assertEnvVar("GH_CLIENT_ID");
 assertEnvVar("GH_CLIENT_SECRET");
 assertEnvVar("SESSION_SECRET");
@@ -131,7 +132,7 @@ function githubLoginUrl(redirect_uri: string) : string {
   const params = new URLSearchParams({
     client_id: process.env.GH_CLIENT_ID!,
     scope: "public_repo codespace",
-    redirect_uri,
+    redirect_uri: `https://${process.env.DOMAIN_NAME}${redirect_uri}`
   });
   return `https://github.com/login/oauth/authorize?${params.toString()}`;
 }
