@@ -1,7 +1,7 @@
-import express, { Request, Response } from 'express';
+import express from "express";
 import session from "express-session";
 import { Octokit } from "@octokit/core";
-import { createAppAuth } from '@octokit/auth-app';
+import { OAuthApp } from '@octokit/oauth-app';
 
 declare module "express-session" {
   interface SessionData {
@@ -9,8 +9,6 @@ declare module "express-session" {
   }
 }
 
-assertEnvVar("GH_APP_ID");
-assertEnvVar("GH_PRIVATE_KEY");
 assertEnvVar("GH_CLIENT_ID");
 assertEnvVar("GH_CLIENT_SECRET");
 assertEnvVar("SESSION_SECRET");
@@ -18,11 +16,10 @@ assertEnvVar("SESSION_SECRET");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-const auth = createAppAuth({
-  appId: process.env.GH_APP_ID!,
-  privateKey: process.env.GH_PRIVATE_KEY!,
-  clientId: process.env.GH_CLIENT_ID,
-  clientSecret: process.env.GH_CLIENT_SECRET
+const oauthApp = new OAuthApp({
+  clientType: "oauth-app",
+  clientId: process.env.GH_CLIENT_ID!,
+  clientSecret: process.env.GH_CLIENT_SECRET!,
 });
 
 app.use(
@@ -61,8 +58,8 @@ app.get("/callback", async (req, res) => {
 
   try {
     // Exchange code for access token
-    const { token } = await auth({ type: "oauth-user", code });
-    req.session.accessToken = token;
+    const { authentication } = await oauthApp.createToken({ code })
+    req.session.accessToken = authentication.token;
     res.redirect("/repos");
   } catch (err) {
     console.error("OAuth error:", err);
