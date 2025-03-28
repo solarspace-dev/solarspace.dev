@@ -42,6 +42,7 @@ services:
   certbot:
     image: certbot/certbot
     container_name: certbot
+    profiles: [manual]  # Only run when explicitly requested
     depends_on:
       - nginx
     volumes:

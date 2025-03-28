@@ -1,0 +1,27 @@
+name: Run Certbot
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    name: Run Certbot to obtain SSL certificate
+    runs-on: ubuntu-latest
+    environment: Production
+    steps:
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: SSH into droplet and run certbot
+        run: |
+          ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd ~/app
+            export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
+            export EMAIL_ADDRESS=${{ vars.EMAIL_ADDRESS }}
+            docker compose --profile manual run certbot
+            docker exec nginx nginx -s reload
+          EOF

@@ -14,11 +14,11 @@ if [ ! -f "$DUMMY_CERT_DIR" ]; then
     -keyout $DUMMY_CERT_DIR/privkey.pem \
     -out /$DUMMY_CERT_DIR/fullchain.pem \
     -subj "/CN=localhost"
-fi
 
-# Always link to dummy initially
-mkdir -p "$(dirname "$LINK_CERT_DIR")"
-ln -sfn "$DUMMY_CERT_DIR" "$LINK_CERT_DIR"
+  # Always link to dummy initially
+  mkdir -p "$(dirname "$LINK_CERT_DIR")"
+  ln -sfn "$DUMMY_CERT_DIR" "$LINK_CERT_DIR"
+fi
 
 # Substitute env vars into config
 envsubst '$DOMAIN_NAME' < /etc/nginx/default.conf > /etc/nginx/conf.d/default.conf

@@ -28,8 +28,6 @@ jobs:
             cd ~/app
             export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
             export EMAIL_ADDRESS=${{ vars.EMAIL_ADDRESS }}
-            export GH_APP_ID=${{ secrets.GH_APP_ID }}
-            export GH_PRIVATE_KEY=${{ secrets.GH_PRIVATE_KEY }}
             export GH_CLIENT_ID=${{ secrets.GH_CLIENT_ID }}
             export GH_CLIENT_SECRET=${{ secrets.GH_CLIENT_SECRET }}
             export SESSION_SECRET=${{ secrets.SESSION_SECRET }}
