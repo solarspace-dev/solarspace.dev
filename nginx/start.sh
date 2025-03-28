@@ -6,7 +6,8 @@ LINK_CERT_DIR="/etc/letsencrypt/use/${DOMAIN_NAME}"
 
 # Create a dummy certificate if it doesn't exist yet
 # This allows nginx to start even if the real certificate is not available
-if [ ! -f "$DUMMY_CERT_DIR" ]; then
+# This block should only execute on the first run.
+if [ ! -f "$DUMMY_CERT_DIR/fullchain.pem" ]; then
   echo "Generating dummy TLS cert for ${DOMAIN_NAME}..."
   mkdir -p $DUMMY_CERT_DIR
   openssl req -x509 -nodes -newkey rsa:2048 \
