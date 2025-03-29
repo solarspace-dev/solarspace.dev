@@ -39,45 +39,49 @@ app.get("/", (req, res) => {
   `);
 });
 
-app.get("/space/:owner/:repo", async (req, res) => {
-  const octokit = await githubLogin(req, res);
-  const { owner, repo } = req.params;
 
-  // Check if the user already has a code space for this repo
-  let webUrl;
+
+app.get("/space/:owner/:repo", async (req, res) => {
+  // Ensure user is logged in
+  const octokit = await githubLogin(req, res);
+
+  // Which branch to use?
+  const { owner, repo } = req.params;
+  let ref = req.query.ref;
+  if (typeof ref !== "string") {
+    try {
+      const response = await octokit.request('GET /repos/{owner}/{repo}', {
+        owner,
+        repo,
+      });
+      ref = response.data.default_branch;
+    } catch (error) {
+      res.status(404).send("Repository not found.");
+      return;
+    }
+  }
+
+  // Check if the user already has a code space for this repo,branch combination
   try {
     const response = await octokit.request('GET /repos/{owner}/{repo}/codespaces', {
       owner,
       repo,
     });
-    if (response.data.total_count > 0) {
-      const codespace = response.data.codespaces[0];
-      webUrl = codespace.web_url;
+    // Find the code space with the specified ref
+    const codespace = response.data.codespaces.find((cs) => cs.git_status.ref === ref);
+    if (codespace?.web_url) {  
+      res.redirect(codespace.web_url);
+      return;
     }
   } catch (error) {
-    console.error("Error fetching/creating codespace:", error);
-  }
-
-  if (webUrl === undefined) {
-    // If not code space exists, create a new one
-    try {
-      const response = await octokit.request('POST /repos/{owner}/{repo}/codespaces', {
-        owner,
-        repo,
-        ref: "main",
-        retention_period_minutes: 60 * 24, // 24 hours
-      });
-      webUrl = response.data.web_url;
-    } catch (error) {
-      console.error("Error fetching/creating codespace:", error);
-    }
-  }
-  if (!webUrl) {
-    res.status(500).send("Internal Server Error");
+    console.error("Error fetching codespaces:", error);
+    res.status(500).send("Error fetching codespaces.");
     return;
   }
-
-  res.send(`<iframe src="${webUrl}" width="100%" height="100%" style="border: none;"></iframe>`)
+  // If no codespace is found, we create a new one
+  const newCodespaceUrl = `https://github.com/codespaces/new?repo=${owner}/${repo}}&ref=${ref}`
+  res.redirect(newCodespaceUrl);
+  return;
 });
 
 // Logout
@@ -97,7 +101,8 @@ function assertEnvVar(name: string){
   }
 }
 
-// Middleware for GitHub OAuth authentication
+// Ensure user is logged into GitHub
+// If not, redirect her to GitHub for authentication and set the redirect_uri to the current URL
 async function githubLogin(req: express.Request, res: express.Response) : Promise<Octokit> {
   const auth_code = req.query.code;
 
