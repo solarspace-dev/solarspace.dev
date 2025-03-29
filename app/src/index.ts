@@ -79,8 +79,24 @@ app.get("/space/:owner/:repo", async (req, res) => {
     return;
   }
   // If no codespace is found, we create a new one
-  const newCodespaceUrl = `https://github.com/codespaces/new?repo=${owner}/${repo}}&ref=${ref}`
-  res.redirect(newCodespaceUrl);
+  try {
+    const response = await octokit.request('POST /repos/{owner}/{repo}/codespaces', {
+      owner,
+      repo,
+      ref
+    });
+    const codespace = response.data;
+    if (codespace.web_url) {
+      res.redirect(codespace.web_url);
+      return;
+    }
+  } catch (error) {
+    console.error("Error creating codespace:", error);
+    res.status(500).send("Error creating codespace.");
+    return;
+  }
+  // If we reach here, something went wrong
+  res.status(500).send("Error creating codespace.");
   return;
 });
 
