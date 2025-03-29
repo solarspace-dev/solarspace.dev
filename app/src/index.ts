@@ -2,6 +2,7 @@ import express from "express";
 import session from "express-session";
 import { Octokit } from "@octokit/core";
 import { OAuthApp } from '@octokit/oauth-app';
+import path from "path";
 
 declare module "express-session" {
   interface SessionData {
@@ -33,13 +34,11 @@ app.use(
 
 // Landing Page
 app.get("/", (req, res) => {
-  res.send(`
-    <h1>Login with GitHub</h1>
-    <a href="/space/RaoulSchaffranek/theredguild-devcontainer">Create Space</a>
-  `);
+  res.sendFile(path.join(__dirname, "../solid/index.html"));
 });
 
-
+// Serve the dist folder under the /dist route
+app.use("/dist", express.static(path.join(__dirname, "../solid/dist")));
 
 app.get("/space/:owner/:repo", async (req, res) => {
   // Ensure user is logged in
