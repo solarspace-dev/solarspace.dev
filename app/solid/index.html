@@ -56,15 +56,9 @@
                 </div>
             </section>
 
-            <!-- <section class="section">
-                <div class="container">
-                    <video autoplay="" loop="" class="mx-auto mb-12 w-full" muted="" playsinline="" src="https://simbolik.runtimeverification.com/assets/videos/presentation.mp4"></video>
-                </div>
-            </section> -->
-
             <section class="features section">
                 <div class="container">
-					<div class="features-inner section-inner has-bottom-divider">
+					<div class="features-inner section-inner ">
                         <div class="features-wrap">
                             <div class="feature text-center is-revealing">
                                 <div class="feature-inner">
@@ -129,6 +123,32 @@
                             </div>
                         </div>
                     </div>
+                </div>
+            </section>
+
+            <section style="padding-bottom: 3rem;">
+                <h2 class="section-title mt-0" style="text-align: center;">Build for the best DevEx</h2>
+                <div class="container">
+                    <video loop muted playsinline src="dist/videos/code.solar.intro.mp4" id="intro-video" style="border-radius: 1rem; max-width: 100%;"></video>
+                    <script>
+                        const video = document.getElementById('intro-video');
+                        const observer = new IntersectionObserver(
+                            (entries) => {
+                                entries.forEach(entry => {
+                                if (entry.isIntersecting) {
+                                    video.play();
+                                } else {
+                                    video.pause();
+                                }
+                                });
+                            },
+                            {
+                                threshold: 0.8 // Play when 80% visible (you can adjust this)
+                            }
+                        );
+
+                        observer.observe(video);
+                    </script>
                 </div>
             </section>
 
