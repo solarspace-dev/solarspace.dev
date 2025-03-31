@@ -43,6 +43,11 @@ app.use("/dist", express.static(path.join(__dirname, "../solid/dist")));
 app.get("/github/:owner/:repo", async (req, res) => {
   // Ensure user is logged in
   const octokit = await githubLogin(req, res);
+  if (!octokit) {
+    // If oktokit is undefined, the request has already been handled
+    // so we don't need to do anything.
+    return;
+  }
 
   // Which branch to use?
   const { owner, repo } = req.params;
@@ -118,7 +123,7 @@ function assertEnvVar(name: string){
 
 // Ensure user is logged into GitHub
 // If not, redirect her to GitHub for authentication and set the redirect_uri to the current URL
-async function githubLogin(req: express.Request, res: express.Response) : Promise<Octokit> {
+async function githubLogin(req: express.Request, res: express.Response) : Promise<Octokit | undefined> {
   const auth_code = req.query.code;
 
   // If the user is returning from GitHub auth page with an auth code
@@ -134,9 +139,7 @@ async function githubLogin(req: express.Request, res: express.Response) : Promis
       const redirectUri = req.originalUrl.split("?")[0];
       res.redirect(redirectUri);
       res.end();
-      // We throw an error here because the function must return a value
-      // However, the response has already been sent to the client
-      throw new Error("Redirecting to original URL");
+      return undefined;
     });
   }
 
@@ -145,9 +148,7 @@ async function githubLogin(req: express.Request, res: express.Response) : Promis
     const redirectUri = req.originalUrl;
     res.redirect(githubLoginUrl(redirectUri));
     res.end();
-    // We throw an error here because the function must return a value
-    // However, the response has already been sent to the client
-    throw new Error("Redirecting to GitHub login");
+    return undefined;
   }
 
   // If the user is authenticated, return the octokit instance
