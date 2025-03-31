@@ -11,11 +11,10 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
-
     defaults:
       run:
         working-directory: vscode-ext
-
+    environment: Production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
