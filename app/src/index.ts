@@ -129,25 +129,33 @@ async function githubLogin(req: express.Request, res: express.Response) : Promis
   // If the user is returning from GitHub auth page with an auth code
   // we exchange it for an access token and store it in the session
   if (typeof auth_code === "string") {
-    const { authentication } = await oauthApp.createToken({ code: auth_code });
-    req.session.githubToken = authentication.token;
-    req.session.save((err) => {
-      if (err) {
-        console.error("Error saving session:", err);
-      }
+    try {
+      const { authentication } = await oauthApp.createToken({ code: auth_code });
+      req.session.githubToken = authentication.token;
+      await new Promise((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) {
+            console.error("Error saving session:", err);
+            reject(err);
+          }
+          resolve(undefined);
+        });
+      });
       // Redirect the user to the original URL without the auth code
       const redirectUri = req.originalUrl.split("?")[0];
       res.redirect(redirectUri);
-      res.end();
       return undefined;
-    });
+    } catch (error) {
+      console.error("OAuth callback error:", error);
+      res.status(500).send("Authentication failed.");
+      return undefined;
+    }
   }
 
   // If the user is not authenticated, we redirect her to GitHub for authentication
   if (!auth_code && !req.session.githubToken) {
     const redirectUri = req.originalUrl;
     res.redirect(githubLoginUrl(redirectUri));
-    res.end();
     return undefined;
   }
 
