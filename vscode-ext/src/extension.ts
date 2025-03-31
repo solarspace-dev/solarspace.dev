@@ -27,7 +27,7 @@ export function activate(context: vscode.ExtensionContext) {
 		if (hasPendingChanges) {
 			const result = await vscode.window.showWarningMessage(
 				'You have uncommitted or unpushed changes. These will not be shared unless you push them first. Do you want to continue?',
-				'Shary anyway',
+				'Copy link anyway',
 				'Cancel',
 			);
 			if (result == 'Cancel') {
