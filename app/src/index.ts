@@ -130,6 +130,13 @@ async function githubLogin(req: express.Request, res: express.Response) : Promis
       if (err) {
         console.error("Error saving session:", err);
       }
+      // Redirect the user to the original URL without the auth code
+      const redirectUri = req.originalUrl.split("?")[0];
+      res.redirect(redirectUri);
+      res.end();
+      // We throw an error here because the function must return a value
+      // However, the response has already been sent to the client
+      throw new Error("Redirecting to original URL");
     });
   }
 
