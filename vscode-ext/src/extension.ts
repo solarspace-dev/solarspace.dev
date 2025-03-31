@@ -67,10 +67,18 @@ async function pendingChanges() : Promise<boolean> {
 	if (!git) {
 		throw new Error('Git API not found');
 	}
-	for (const repo of git.repositories) {
-		if (repo.state.workingTreeChanges.length > 0 || repo.state.indexChanges.length > 0) {
-			return true;
-		}
+	// Find the root repository (the one with the fewest path segments)
+	const repos = git.repositories;
+	if (repos.length === 0) {
+		throw new Error('No repositories found');
+	}
+	const rootRepo = repos.sort((a, b) => {
+		const aPath = a.rootUri.path.split('/').length;
+		const bPath = b.rootUri.path.split('/').length;
+		return aPath - bPath;
+	})[0];
+	if (rootRepo.state.workingTreeChanges.length > 0 || rootRepo.state.indexChanges.length > 0) {
+		return true;
 	}
 	return false;
 }
@@ -87,13 +95,23 @@ async function githubRepo () : Promise<string> {
 		vscode.window.showErrorMessage('Git API not found');
 		return '';
 	}
-	for (const repo of git.repositories) {
-		const remote = repo.state.remotes.find(r => r.name === 'origin');
-		if (remote) {
-			const url = remote.fetchUrl;
-			if (url) {
-				return url;
-			}
+	// Find the root repository (the one with the fewest path segments)
+	const repos = git.repositories;
+	if (repos.length === 0) {
+		vscode.window.showErrorMessage('No repositories found');
+		return '';
+	}
+	const rootRepo = repos.sort((a, b) => {
+		const aPath = a.rootUri.path.split('/').length;
+		const bPath = b.rootUri.path.split('/').length;
+		return aPath - bPath;
+	})[0];
+
+	const remote = rootRepo.state.remotes.find(r => r.name === 'origin');
+	if (remote) {
+		const url = remote.fetchUrl;
+		if (url) {
+			return url;
 		}
 	}
 	vscode.window.showErrorMessage('No remote repository found');
