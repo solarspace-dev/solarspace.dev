@@ -69,9 +69,9 @@
 							<div class="feature text-center is-revealing">
                                 <div class="feature-inner">
                                     <div class="feature-icon">
-										<img src="dist/images/ghostery.svg" alt="Unobstrusive" style="height: 100px">
+										<img src="dist/images/ghostery.svg" alt="Unobtrusive" style="height: 100px">
                                     </div>
-                                    <h4 class="feature-title mt-24">Seamless & Unobstrusive</h4>
+                                    <h4 class="feature-title mt-24">Seamless & Unobtrusive</h4>
                                     <p class="text-sm mb-0">It's your code, your dev environment, and your usage data. Solar Spaces don't lock you into a proprietary ecosystem.
                                         Use what you like, and leave what you don't like.</p>
                                     </p>
@@ -105,27 +105,55 @@
             </section>
 
             <section style="padding-bottom: 3rem;">
-                <h2 class="section-title mt-0" style="text-align: center;">Build for the best DevEx</h2>
+                <h2 class="section-title mt-0" style="text-align: center; margin-bottom: 3rem;">Quickstart</h2>
                 <div class="container">
-                    <video loop muted playsinline src="dist/videos/code.solar.intro.mp4" id="intro-video" style="border-radius: 1rem; max-width: 100%;"></video>
+                    <video loop muted playsinline src="dist/videos/solarspace.dev.intro.compressed.mp4" id="intro-video" style="border-radius: 1rem; max-width: 100%;"></video>
                     <script>
-                        const video = document.getElementById('intro-video');
-                        const observer = new IntersectionObserver(
-                            (entries) => {
-                                entries.forEach(entry => {
-                                if (entry.isIntersecting) {
-                                    video.play();
-                                } else {
-                                    video.pause();
+                        (function() {
+                            const video = document.getElementById('intro-video');
+                            const observer = new IntersectionObserver(
+                                (entries) => {
+                                    entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        video.play();
+                                    } else {
+                                        video.pause();
+                                    }
+                                    });
+                                },
+                                {
+                                    threshold: 0.8 // Play when 80% visible (you can adjust this)
                                 }
-                                });
-                            },
-                            {
-                                threshold: 0.8 // Play when 80% visible (you can adjust this)
-                            }
-                        );
+                            );
+                            observer.observe(video);
+                        }());
+                    </script>
+                </div>
+            </section>
 
-                        observer.observe(video);
+            <section style="padding-bottom: 3rem;">
+                <h2 class="section-title mt-0" style="text-align: center; margin-bottom: 3rem;">Share your space</h2>
+                <div class="container">
+                    <video loop muted playsinline src="dist/videos/solarspace.dev.share.compressed.mp4" id="share-video" style="border-radius: 1rem; max-width: 100%;"></video>
+                    <script>
+                        (function() {
+                            const video = document.getElementById('share-video');
+                            const observer = new IntersectionObserver(
+                                (entries) => {
+                                    entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        video.play();
+                                    } else {
+                                        video.pause();
+                                    }
+                                    });
+                                },
+                                {
+                                    threshold: 0.8 // Play when 80% visible (you can adjust this)
+                                }
+                            );
+                            observer.observe(video);
+                        }());
                     </script>
                 </div>
             </section>
