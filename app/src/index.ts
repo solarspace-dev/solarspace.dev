@@ -40,7 +40,7 @@ app.get("/", (req, res) => {
 // Serve the dist folder under the /dist route
 app.use("/dist", express.static(path.join(__dirname, "../solid/dist")));
 
-app.get("/space/:owner/:repo", async (req, res) => {
+app.get("/github/:owner/:repo", async (req, res) => {
   // Ensure user is logged in
   const octokit = await githubLogin(req, res);
 
