@@ -106,11 +106,13 @@ async function solarSpaceUrl() : Promise<string> {
 		vscode.window.showErrorMessage('No repository found');
 		return '';
 	}
-	// Ensure the URL patches this pattern:  git@github.com:{owner}/{repo}.git
+	// Ensure the URL matches either
+	//  git@github.com:{owner}/{repo}.git or
+	//  https://github.com/{owner}/{repo}
 	// If not, show an error message
 	// Otherwise rewrite URL to: https://solarspace.dev/github/{owner}/{repo}
 
-	const regex = /git@github\.com:(.+)\/(.+)\.git/;
+	const regex = /(?:git@github\.com:|https:\/\/github\.com\/)([^\/]+)\/([^\/]+?)(?:\.git)?$/;
 	const match = repo.match(regex);
 	if (!match) {
 		vscode.window.showErrorMessage('Invalid repository URL');
