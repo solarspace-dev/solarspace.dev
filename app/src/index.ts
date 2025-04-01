@@ -37,6 +37,12 @@ app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "../solid/index.html"));
 });
 
+// Block embedding this site in frames
+app.use((req, res, next) => {
+  res.setHeader("X-Frame-Options", "DENY");
+  next();
+});
+
 // Serve the dist folder under the /dist route
 app.use("/dist", express.static(path.join(__dirname, "../solid/dist")));
 
