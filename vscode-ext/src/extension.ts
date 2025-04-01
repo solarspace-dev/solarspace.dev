@@ -77,7 +77,7 @@ async function pendingChanges() : Promise<boolean> {
 		const bPath = b.rootUri.path.split('/').length;
 		return aPath - bPath;
 	})[0];
-	if (rootRepo.state.workingTreeChanges.length > 0 || rootRepo.state.indexChanges.length > 0) {
+	if (rootRepo.state.workingTreeChanges.length > 0 || (rootRepo.state.HEAD?.ahead ?? 0 > 0)) {
 		return true;
 	}
 	return false;
