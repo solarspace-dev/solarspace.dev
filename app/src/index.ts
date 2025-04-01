@@ -65,13 +65,18 @@ app.get("/github/:owner/:repo", async (req, res) => {
         repo,
       });
       ref = response.data.default_branch;
+      // Is the repo public? If not, we stop here
+      if (response.data.private) {
+        res.status(403).send("Repository is private.");
+        return;
+      }
     } catch (error) {
       res.status(404).send("Repository not found.");
       return;
     }
   }
 
-  // Check if the user already has a code space for this repo,branch combination
+  // Check if the user already has a code space for this repo, branch combination
   try {
     const response = await octokit.request('GET /repos/{owner}/{repo}/codespaces', {
       owner,
