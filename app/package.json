@@ -13,6 +13,7 @@
   "description": "",
   "dependencies": {
     "@octokit/oauth-app": "^7.1.6",
+    "@solarspace-dev/vscode-web": "1.100.0-solarspace.0",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
     "octokit": "^4.1.2"

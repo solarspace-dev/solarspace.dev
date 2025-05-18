@@ -3,6 +3,8 @@ services:
     build:
       context: ./app
       dockerfile: Dockerfile
+      args:
+        - GITHUB_TOKEN=${GITHUB_TOKEN}
     container_name: app
     restart: always
     expose:
