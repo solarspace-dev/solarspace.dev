@@ -83,7 +83,10 @@ async function ensureHasLinkedRepo(workspaceFolder: vscode.WorkspaceFolder, trie
 		throw new Error('No linked repository found after multiple attempts');
 	}
 	const rootRepo = getRootRepository(workspaceFolder);
-	if (!rootRepo || !rootRepo.state.remotes.some((r: Remote) => r.name === 'origin')) {
+	if (!rootRepo) {
+		throw new Error('No root repository found. Please initialize a Git repository in the workspace folder.');
+	}
+	if (!rootRepo.state.remotes.some((r: Remote) => r.name === 'origin')) {
 		await vscode.commands.executeCommand('git.publish', rootRepo);
 		await ensureHasLinkedRepo(workspaceFolder, tries - 1);
 	}
