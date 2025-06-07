@@ -110,7 +110,6 @@ async function checkPendingChanges(workspaceFolder: vscode.WorkspaceFolder): Pro
 	const rootRepo = getRootRepository(workspaceFolder);
 
 	if (!rootRepo) {
-		await vscode.commands.executeCommand('git.publish', rootRepo);
 		throw new Error('No repositories found');
 	}
 
