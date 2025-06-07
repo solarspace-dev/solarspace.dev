@@ -16,6 +16,9 @@ COPY . .
 # Build the TypeScript code
 RUN npm run build
 
+# Build the frontend
+RUN npm run build:frontend
+
 # Expose the port the app runs on
 EXPOSE 3000
 

@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
+    "build:frontend": "cd ./solid && npm install --legacy-peer-deps && npm run build",
     "build": "tsc",
     "start": "node dist/index.js"
   },

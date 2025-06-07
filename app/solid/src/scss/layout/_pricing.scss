@@ -24,22 +24,6 @@
     width: 368px;
     max-width: 368px;
     flex-grow: 1;
-
-	&::before {
-		content: '';
-		position: absolute;
-		left: 50%;
-		width: 200%;
-		max-width: 200%;
-		height: 435px;
-		background-repeat: no-repeat;
-		background-position: center;
-		background-size: 100%;
-		bottom: 18.8%;
-		-webkit-transform: translateX(-50%);
-		transform: translateX(-50%);
-		background-image: url('../images/pricing-illustration.svg');
-	}
 }
 
 .pricing-table-header,

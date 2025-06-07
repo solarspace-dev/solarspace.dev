@@ -21,8 +21,6 @@
 	                        <h1 class="hero-title mt-0">Solar Space</h1>
 	                        <p class="hero-paragraph">Solar Spaces are accessible dev containers focused on collaborating and sharing <b>Ethereum</b> projects, here to bring you the best possible developer experience.</p>
                             <p> A solar spaces runs on your local machine or in your browser via GitHub Codespace.</p>
-	                        <p class="hero-paragraph"></p>
-	                        <div class="hero-cta"><a class="button button-primary" href="/github/solarspace-dev/solar-blank">Create Solar Space</a></div>
 						</div>
 						<div class="">
 							<img src="dist/images/solarspace.png" width="720" height="720" style="position: relative; z-index: 1;">
@@ -31,12 +29,108 @@
                 </div>
             </section>
 
-            <section class="section">
+            <section class="pricing section">
                 <div class="container">
-                <p>🚧 Heads up! Solar Space is still in early development and things may change or break at any time — including backward compatibility.
-                    Please don’t use it in production environments just yet.
-                    If you spot a bug or have a suggestion, please <a href="https://github.com/solarspace-dev/solarspace.dev">open an issue on GitHub</a>.
-                </p>
+                    <div class="pricing-inner section-inner">
+						<div class="pricing-tables-wrap">
+                            <div class="pricing-table">
+                                <div class="pricing-table-inner is-revealing">
+                                    <div class="pricing-table-main">
+                                        <div class="pricing-table-header pb-24">
+                                            <div><h3 class="section-title mt-0" style="text-align: center;">
+                                                <img src="dist/images/foundry-logo.png" style="max-width: 8rem; display: inline;" alt="Foundry" />
+                                            </h3></div>
+                                        </div>
+                                    </div>
+                                    <div class="pricing-table-cta mb-8">
+                                        <a class="button button-primary button-shadow button-block" href="/github/solarspace-dev/solar-foundry">Create Foundry Space</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-table">
+                                <div class="pricing-table-inner is-revealing">
+                                    <div class="pricing-table-main">
+                                        <div class="pricing-table-header pb-24">
+                                            <div><h3 class="section-title mt-0" style="text-align: center;">
+                                                <img src="dist/images/hardhat.svg" style="max-width: 8rem; display: inline;" alt="Hardhat" />
+                                            </h3></div>
+                                        </div>
+                                    </div>
+                                    <div class="pricing-table-cta mb-8">
+                                        <a class="button button-primary button-shadow button-block" href="/github/solarspace-dev/solar-hardhat">Create Hardhat Space</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pricing-table">
+                                <div class="pricing-table-inner is-revealing">
+                                    <div class="pricing-table-main">
+                                        <div class="pricing-table-header pb-24">
+                                            <div><h3 class="section-title mt-0" style="text-align: center;">
+                                                <img src="dist/images/files-empty.svg" style="max-width: 8rem; display: inline;" alt="Blank Project" />
+                                            </h3></div>
+                                        </div>
+                                    </div>
+                                    <div class="pricing-table-cta mb-8">
+                                        <a class="button button-primary button-shadow button-block" href="/github/solarspace-dev/solar-blank">Create Blank Space</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section style="padding-bottom: 3rem;">
+                <h2 class="section-title mt-0" style="text-align: center; margin-bottom: 3rem;"><span style="font-weight: normal; color: #9f9f9f">❶</span> Create a space</h2>
+                <div class="container">
+                    <video loop muted playsinline src="dist/videos/solarspace.dev.intro.compressed.mp4" id="intro-video" style="border-radius: 1rem; max-width: 100%;"></video>
+                    <script>
+                        (function() {
+                            const video = document.getElementById('intro-video');
+                            const observer = new IntersectionObserver(
+                                (entries) => {
+                                    entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        video.play();
+                                    } else {
+                                        video.pause();
+                                    }
+                                    });
+                                },
+                                {
+                                    threshold: 0.8 // Play when 80% visible (you can adjust this)
+                                }
+                            );
+                            observer.observe(video);
+                        }());
+                    </script>
+                </div>
+            </section>
+
+            <section style="padding-bottom: 3rem;">
+                <h2 class="section-title mt-0" style="text-align: center; margin-bottom: 3rem;"><span style="font-weight: normal; color: #9f9f9f">❷</span> Share your space</h2>
+                <div class="container">
+                    <video loop muted playsinline src="dist/videos/solarspace.dev.share.compressed.mp4" id="share-video" style="border-radius: 1rem; max-width: 100%;"></video>
+                    <script>
+                        (function() {
+                            const video = document.getElementById('share-video');
+                            const observer = new IntersectionObserver(
+                                (entries) => {
+                                    entries.forEach(entry => {
+                                    if (entry.isIntersecting) {
+                                        video.play();
+                                    } else {
+                                        video.pause();
+                                    }
+                                    });
+                                },
+                                {
+                                    threshold: 0.8 // Play when 80% visible (you can adjust this)
+                                }
+                            );
+                            observer.observe(video);
+                        }());
+                    </script>
                 </div>
             </section>
 
@@ -110,60 +204,6 @@
                             </div>
                         </div>
                     </div>
-                </div>
-            </section>
-
-            <section style="padding-bottom: 3rem;">
-                <h2 class="section-title mt-0" style="text-align: center; margin-bottom: 3rem;"><span style="font-weight: normal; color: #9f9f9f">❶</span> Create a space</h2>
-                <div class="container">
-                    <video loop muted playsinline src="dist/videos/solarspace.dev.intro.compressed.mp4" id="intro-video" style="border-radius: 1rem; max-width: 100%;"></video>
-                    <script>
-                        (function() {
-                            const video = document.getElementById('intro-video');
-                            const observer = new IntersectionObserver(
-                                (entries) => {
-                                    entries.forEach(entry => {
-                                    if (entry.isIntersecting) {
-                                        video.play();
-                                    } else {
-                                        video.pause();
-                                    }
-                                    });
-                                },
-                                {
-                                    threshold: 0.8 // Play when 80% visible (you can adjust this)
-                                }
-                            );
-                            observer.observe(video);
-                        }());
-                    </script>
-                </div>
-            </section>
-
-            <section style="padding-bottom: 3rem;">
-                <h2 class="section-title mt-0" style="text-align: center; margin-bottom: 3rem;"><span style="font-weight: normal; color: #9f9f9f">❷</span> Share your space</h2>
-                <div class="container">
-                    <video loop muted playsinline src="dist/videos/solarspace.dev.share.compressed.mp4" id="share-video" style="border-radius: 1rem; max-width: 100%;"></video>
-                    <script>
-                        (function() {
-                            const video = document.getElementById('share-video');
-                            const observer = new IntersectionObserver(
-                                (entries) => {
-                                    entries.forEach(entry => {
-                                    if (entry.isIntersecting) {
-                                        video.play();
-                                    } else {
-                                        video.pause();
-                                    }
-                                    });
-                                },
-                                {
-                                    threshold: 0.8 // Play when 80% visible (you can adjust this)
-                                }
-                            );
-                            observer.observe(video);
-                        }());
-                    </script>
                 </div>
             </section>
 
