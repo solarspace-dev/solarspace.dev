@@ -1,5 +1,4 @@
 (function () {
-  const win = window
   const doc = document.documentElement
 
   doc.classList.remove('no-js')
