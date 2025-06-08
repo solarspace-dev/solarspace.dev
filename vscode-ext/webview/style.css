@@ -162,6 +162,7 @@ button:hover {
 .notification {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   color: var(--vscode-editorWarning-foreground);
   background-color: var(--vscode-editorWarning-background);
   border: 1px solid var(--vscode-editorWarning-foreground);
