@@ -94,12 +94,6 @@ body {
   flex-wrap: wrap;
   width: 100%;
 }
-#save-container {
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  text-align: center;
-  position: relative;
-}
 .dot {
   width: 15px;
   height: 15px;
@@ -126,7 +120,7 @@ body {
   font-size: calc(var(--vscode-editor-font-size) * 1px) !important;
   display: inline-block;
 }
-#copy {
+/* #copy {
   position: absolute;
   bottom: 1rem;
   right: 1rem;
@@ -138,16 +132,62 @@ body {
 
 #copy .codicon-copy {
   font-size: 1.5rem;
-}
+} */
 
 button {
+  display: flex;
+  align-items: center;
   background-color: var(--vscode-button-background);
   color: var(--vscode-button-foreground);
   padding: 0.5em 1em;
   border: 0px solid transparent;
-  margin-right: 1em;
   cursor: pointer;
+  gap: 0.5em;
 }
+
+button.secondary {
+  background-color: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground);
+}
+
 button:hover {
   background-color: var(--vscode-button-hoverBackground);
+}
+
+.notifications {
+  display: flex;
+  flex-direction: column;
+}
+
+.notification {
+  display: flex;
+  align-items: center;
+  color: var(--vscode-editorWarning-foreground);
+  background-color: var(--vscode-editorWarning-background);
+  border: 1px solid var(--vscode-editorWarning-foreground);
+  padding: 0.5rem 1rem;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+#solar-space-url-container {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 2rem;
+}
+
+#image-action-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+output {
+  display: flex;
+  align-items: center;
+  background-color: var(--vscode-input-background);
+  color: var(--vscode-input-foreground);
+  border: 1px solid var(--vscode-input-border);
+  font-family: var(--vscode-editor-font-family);
+  padding: 0.5rem 1rem;
 }

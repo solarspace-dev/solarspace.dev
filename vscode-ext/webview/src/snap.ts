@@ -1,11 +1,6 @@
 import { $, $$ } from './util.js';
 import domtoimage from 'dom-to-image-even-more';
 
-declare global {
-  function acquireVsCodeApi();
-}
-
-const vscode = acquireVsCodeApi();
 const windowNode = $('#window');
 const snippetContainerNode = $('#snippet-container');
 
@@ -16,7 +11,7 @@ export interface SnapConfig {
   shutterAction: 'copy' | 'save';
 }
 
-export const takeSnap = async (config: SnapConfig) => {
+export const takeSnap = async (vscode, config: SnapConfig) => {
   windowNode.style.resize = 'none';
 
   const target = config.target === 'container' ? snippetContainerNode : windowNode;
@@ -39,9 +34,9 @@ export const takeSnap = async (config: SnapConfig) => {
     for (let i = 0; i < binary.length; i++) array[i] = binary.charCodeAt(i);
     const blob = new Blob([array], { type: 'image/png' });
     navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]);
-    vscode.postMessage({ type: 'copy' });
+    vscode.postMessage({ type: 'Copied Snapshot' });
   } else {
-    vscode.postMessage({ type: config.shutterAction, data });
+    vscode.postMessage({ type: 'Save Snapshot', data });
   }
 
   windowNode.style.resize = 'horizontal';

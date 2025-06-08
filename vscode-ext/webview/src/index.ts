@@ -4,12 +4,20 @@ import { createHighlighter } from 'shiki';
 import { createJavaScriptRegexEngine } from 'shiki/dist/engine-javascript.mjs';
 
 const windowTitleNode = $('#window-title');
-const copyButton = $('#copy');
+const copyButton = $('#copy-snapshot');
+const saveButton = $('#save-snapshot');
 const snippet = $('#snippet');
+const notifications = $('#notifications');
+const solarSpaceUrl = $('#solar-space-url');
 
 let config;
 
+declare global {
+  function acquireVsCodeApi();
+}
 
+
+const vscode = acquireVsCodeApi();
 const jsEngine = createJavaScriptRegexEngine();
 
 createHighlighter({
@@ -18,7 +26,22 @@ createHighlighter({
   engine: jsEngine,
 }).then((shiki) => {
 
-  copyButton.addEventListener('click', () => takeSnap({ ...config, shutterAction: 'copy' }));
+  vscode.postMessage({
+    type: 'Webview Ready',
+  });
+
+  copyButton.addEventListener('click', () => takeSnap(vscode, { ...config, shutterAction: 'copy' }));
+  saveButton.addEventListener('click', () => takeSnap(vscode, { ...config, shutterAction: 'save' }));
+
+  document.body.addEventListener('click', (event) => {
+    const target = event.target as HTMLButtonElement;
+    const action = target.value;
+    if (action) {
+      vscode.postMessage({
+        type: action,
+      });
+    }
+  });
 
   window.addEventListener('message', ({ data: { type, ...cfg } }) => {
     if (type === 'update') {
@@ -28,10 +51,23 @@ createHighlighter({
         windowTitle,
         text,
         language,
-        selection
+        url,
+        errors,
       } = config;
 
       windowTitleNode.textContent = windowTitle;
+
+      const errorHtml = errors.map(({ severity, message, action, actionClass }) => {
+        return `<div class="notification ${severity}">
+          <i class="codicon codicon-alert"></i>
+          <span class="message">${message}</span>
+          ${action ? `<button value="${action}" class="secondary"><i class="codicon ${actionClass}"></i>${action}</button>` : ''}
+        </div>`;
+      }).join('');
+      notifications.innerHTML = errorHtml;
+
+      solarSpaceUrl.textContent = url ?? '';
+
 
       snippet.innerHTML = shiki.codeToHtml(text, {
         lang: 'solidity',
