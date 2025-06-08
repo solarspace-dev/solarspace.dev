@@ -1,6 +1,9 @@
 # Solar Space
 
-Effortlessly share your code and development environment with friends using Solar Space.
+Share a link to open your repository on a GitHub codespaces and add a beautiful snapshot of your code to let people know what you're working on.
+
+![Screenshot Sharing Page](./images/screenshot.png)
+
 
 ## Features
 
