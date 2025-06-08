@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; img-src %CSP_SOURCE% data: https:; script-src %CSP_SOURCE%; style-src 'unsafe-inline' %CSP_SOURCE%;"
+    />
+    <title>Share Space</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./src/index.ts" type="module"></script>
+  </head>
+
+  <body>
+    <div id="save-container">
+      <button id="save">
+        Copy to clipboard
+      </button>
+      <button id="post-on-x">
+        Post on X
+      </button>
+    </div>
+
+    <div id="solar-space-url-container">
+      <output id="solar-space-url"></output>
+    </div>
+
+    <div id="snippet-scroll">
+      <div id="snippet-container">
+        <div id="window">
+          <div id="navbar">
+            <div id="window-controls">
+              <div class="red dot"></div>
+              <div class="yellow dot"></div>
+              <div class="green dot"></div>
+            </div>
+            <div id="window-title"></div>
+          </div>
+          <div id="snippet"></div>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

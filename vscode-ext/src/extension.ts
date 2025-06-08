@@ -1,11 +1,13 @@
 import * as vscode from 'vscode';
 import { API, GitExtension, Remote, Repository } from './git';
+import { activate as activateSnapShot } from './snapshot';
 
 export function activate(context: vscode.ExtensionContext) {
 	console.log('Congratulations, your extension "solarspace" is now active!');
 
 	registerShareCommand(context);
 	createStatusBarButton(context);
+	activateSnapShot(context);
 }
 
 export function deactivate() {}
