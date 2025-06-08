@@ -4,7 +4,7 @@ import * as path from 'path';
 import { homedir } from 'os';
 import { readFile, writeFile } from 'fs/promises';
 
-let lastUsedImageUri = vscode.Uri.file(path.resolve(homedir(), 'Desktop/code.png'));
+let lastUsedImageUri = vscode.Uri.file(path.resolve(homedir(), 'snapshot.png'));
 
 interface ViewState {
 	text: string;
@@ -28,7 +28,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
 export function deactivate() {}
 
-type WebViewAction = 'Webview Ready' | 'Copy URL' | 'Copy Snapshot' | 'Copied Snapshot' | 'Save Snapshot' | 'Commit' | 'Push' | 'Add Remote' | 'Initialize Repository';
+type WebViewAction = 'Webview Ready' | 'Reload' | 'Copy URL' | 'Copy Snapshot' | 'Copied Snapshot' | 'Copied Link' | 'Save Snapshot' | 'Commit' | 'Push' | 'Publish Branch' | 'Initialize Repository';
 
 function registerShareCommand(context: vscode.ExtensionContext) {
 	const shareCommand = vscode.commands.registerCommand('solarspace.share', async () => {
@@ -42,6 +42,9 @@ function registerShareCommand(context: vscode.ExtensionContext) {
 			panel.webview.onDidReceiveMessage(async ({ type, data }: { type: WebViewAction; data: string }) => {
 				if (type === 'Webview Ready') {
 					await update();
+				} else if (type === 'Reload') {
+					await update();
+					await vscode.window.showInformationMessage('Refreshed View');
 				} else if (type === 'Copy Snapshot') {
 					// Noop
 					// This is handled in the webview
@@ -56,14 +59,22 @@ function registerShareCommand(context: vscode.ExtensionContext) {
 					// The copy action is handled in the webview
 					// We just show the notification message 
 					vscode.window.showInformationMessage('Image copied to clipboard');
+				} else if (type === 'Copied Link') {
+					// The copy action is handled in the webview
+					// We just show the notification message 
+					vscode.window.showInformationMessage('Solar Space URL copied to clipboard');
 				} else if (type === 'Initialize Repository') {
-					vscode.commands.executeCommand('git.init');
+					await vscode.commands.executeCommand('git.init');
+					await update();
 				} else if (type === 'Commit') {
-					vscode.commands.executeCommand('git.commit');
+					await vscode.commands.executeCommand('git.commit');
+					await update();
 				} else if (type === 'Push') {
-					vscode.commands.executeCommand('git.push');
-				} else if (type === 'Add Remote') {
-					vscode.commands.executeCommand('git.remote.add');
+					await vscode.commands.executeCommand('git.push');
+					await update();
+				} else if (type === 'Publish Branch') {
+					await vscode.commands.executeCommand('git.publish');
+					await update();
 				} else {
 					vscode.window.showErrorMessage(`Solar Space: Unknown action "${type}"`);
 				}
@@ -181,7 +192,7 @@ async function generateSolarSpaceUrl(git: API, workspaceFolder: vscode.Workspace
 async function getViewState(): Promise<ViewState> {
 	let url : string | undefined;
 	const errors: ErrorViewState[] = [];
-    const editor = vscode.window.activeTextEditor;
+    const editor = vscode.window.activeTextEditor || vscode.window.visibleTextEditors[0];
     const selection = editor?.selection;
 
 	const git = gitApi();
@@ -218,7 +229,7 @@ async function getViewState(): Promise<ViewState> {
 		errors.push({
 			severityClass: 'error',
 			message: 'No linked repository found. Please link the remote origin to GitHub.',
-			action: 'Add Remote',
+			action: 'Publish Branch',
 			actionClass: 'codicon-repo'
 		});
 		return { text: '', language: 'plaintext', url, errors };

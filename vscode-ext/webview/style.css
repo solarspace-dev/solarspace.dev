@@ -148,8 +148,14 @@ button {
 }
 
 button.secondary {
-  background-color: var(--vscode-button-secondaryBackground);
-  color: var(--vscode-button-secondaryForeground);
+  /* background-color: var(--vscode-button-secondaryBackground);
+  color: var(--vscode-button-secondaryForeground); */
+  background-color: transparent;
+  color: var(--vscode-editor-foreground);
+}
+button.secondary:hover {
+  background-color: var(--vscode-button-secondaryHoverBackground);
+  color: var(--vscode-button-secondaryHoverForeground);
 }
 
 button:hover {
@@ -200,4 +206,16 @@ output {
   border: 1px solid var(--vscode-input-border);
   font-family: var(--vscode-editor-font-family);
   padding: 0.5rem 1rem;
+}
+
+#reload-button {
+  background-color: transparent;
+  color: var(--vscode-editor-foreground);
+  align-self: end;
+  border: none;
+  margin-bottom: 1rem;;
+}
+#reload-button:hover {
+  color: var(--vscode-button-secondaryHoverForeground);
+  background-color: var(--vscode-button-secondaryHoverBackground);
 }

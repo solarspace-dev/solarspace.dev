@@ -14,9 +14,8 @@ export default defineConfig({
       input: './index.html',
       output: {
         entryFileNames: 'index.js',       // ← force output file name
-        inlineDynamicImports: true, // ← allows dynamic imports in the webview
         manualChunks: undefined,  // ← disables code splitting
-        assetFileNames: '[name][extname]'
+        assetFileNames: '[name][extname]',
       }
     }
   }
