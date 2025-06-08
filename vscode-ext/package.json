@@ -64,6 +64,7 @@
     "vscode.git"
   ],
   "dependencies": {
+    "@vscode/codicons": "^0.0.36",
     "dom-to-image-even-more": "^1.0.4",
     "shiki": "^3.6.0"
   }

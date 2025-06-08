@@ -78,15 +78,13 @@ async function runCommand (context: vscode.ExtensionContext): Promise<void> {
 
 async function readHtml (htmlPath: string, panel: vscode.WebviewPanel): Promise<string> {
     const template = await readFile(htmlPath, 'utf-8');
-    return template
-    .replace(/%CSP_SOURCE%/gu, panel.webview.cspSource)
-    .replace(
-        /(src|href)="([^"]*)"/gu,
-        (_, type, src) =>
-            `${type}="${panel.webview.asWebviewUri(
-            vscode.Uri.file(path.resolve(htmlPath, '..', src.replace('src', 'dist').replace('.ts', '.js')))
-        )}"`
-    );
+    const mainCss = panel.webview.asWebviewUri(vscode.Uri.file(path.resolve(htmlPath, '../dist/style.css')));
+    const mainJs = panel.webview.asWebviewUri(vscode.Uri.file(path.resolve(htmlPath, '../dist/index.js')));
+    const html = template
+        .replace(/%CSP_SOURCE%/gu, panel.webview.cspSource)
+        .replace('./style.css', mainCss.toString())
+        .replace('./src/index.ts', mainJs.toString());
+    return html;
 }
 
 export

@@ -4,7 +4,7 @@ import { createHighlighter } from 'shiki';
 import { createJavaScriptRegexEngine } from 'shiki/dist/engine-javascript.mjs';
 
 const windowTitleNode = $('#window-title');
-const btnSave = $('#save');
+const copyButton = $('#copy');
 const snippet = $('#snippet');
 
 let config;
@@ -18,7 +18,7 @@ createHighlighter({
   engine: jsEngine,
 }).then((shiki) => {
 
-  btnSave.addEventListener('click', () => takeSnap({ ...config, shutterAction: 'copy' }));
+  copyButton.addEventListener('click', () => takeSnap({ ...config, shutterAction: 'copy' }));
 
   window.addEventListener('message', ({ data: { type, ...cfg } }) => {
     if (type === 'update') {
