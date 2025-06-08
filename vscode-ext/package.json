@@ -3,7 +3,7 @@
   "publisher": "solarspace",
   "displayName": "Solar Space",
   "description": "Sharable URLs for GitHub codespaces",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "license": "GPL-3.0-only",
   "engines": {
     "vscode": "^1.90.0"
@@ -24,13 +24,16 @@
     "commands": [
       {
         "command": "solarspace.share",
-        "title": "Copy solarspace.dev Link",
+        "title": "Share Solar Space",
         "icon": "link-external"
       }
     ]
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
+    "build:webview": "cd ./webview && vite build",
+    "build:ext": "webpack",
+    "build": "npm run build:webview && npm run build:ext",
     "compile": "webpack",
     "watch": "webpack --watch",
     "package": "webpack --mode production --devtool hidden-source-map",
@@ -51,10 +54,16 @@
     "eslint": "^9.13.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.3",
+    "vite": "^6.3.5",
     "webpack": "^5.95.0",
     "webpack-cli": "^5.1.4"
   },
   "extensionDependencies": [
     "vscode.git"
-  ]
+  ],
+  "dependencies": {
+    "@vscode/codicons": "^0.0.36",
+    "dom-to-image-even-more": "^1.0.4",
+    "shiki": "^3.6.0"
+  }
 }

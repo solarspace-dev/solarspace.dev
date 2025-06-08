@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; img-src %CSP_SOURCE% data: https:; script-src %CSP_SOURCE%; style-src 'unsafe-inline' %CSP_SOURCE%; font-src %CSP_SOURCE% data:;"
+    />
+    <title>Share Space</title>
+    <link rel="stylesheet" href="./style.css" />
+    <script src="./src/index.ts" type="module"></script>
+  </head>
+
+  <body>
+
+    <button id="reload-button" value="Reload">
+      <i class="codicon codicon-refresh"></i>Refresh
+    </button>
+
+    <div id="notifications">
+    </div>
+
+    <p>
+      Visitors of this link can create a GitHub codespace with a single click.
+    </p>
+    <div id="solar-space-url-container">
+      <output id="solar-space-url"></output>
+      <button id="copy-url" value="Copy URL"><i class="codicon codicon-copy"></i>Copy Link</button>
+    </div>
+
+    <p>
+      Add an image when sharing to show what you are working on.<br />
+    </p>
+    <div id="snippet-scroll">
+      <div id="snippet-container">
+        <div id="window">
+          <div id="navbar">
+            <div id="window-controls">
+              <div class="red dot"></div>
+              <div class="yellow dot"></div>
+              <div class="green dot"></div>
+            </div>
+            <div id="window-title"></div>
+          </div>
+          <div id="snippet"></div>
+        </div>
+      </div>
+    </div>
+
+    <div id="image-action-container">
+      <button id="save-snapshot" value="Save Snapshot" class="secondary">
+        <i class='codicon codicon-save'></i>
+        Save Snapshot
+      </button>
+      <button id="copy-snapshot" value="Copy Snapshot" class="">
+        <i class='codicon codicon-copy'></i>
+        Copy Snapshot
+      </button>
+    </div>
+  </body>
+</html>
