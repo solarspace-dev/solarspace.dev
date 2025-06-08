@@ -57,8 +57,8 @@ createHighlighter({
 
       windowTitleNode.textContent = windowTitle;
 
-      const errorHtml = errors.map(({ severity, message, action, actionClass }) => {
-        return `<div class="notification ${severity}">
+      const errorHtml = errors.map(({ severityClass, message, action, actionClass }) => {
+        return `<div class="notification ${severityClass}">
           <i class="codicon codicon-alert"></i>
           <span class="message">${message}</span>
           ${action ? `<button value="${action}" class="secondary"><i class="codicon ${actionClass}"></i>${action}</button>` : ''}

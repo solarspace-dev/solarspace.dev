@@ -14,7 +14,7 @@ interface ViewState {
 }
 
 interface ErrorViewState {
-	severitiy: 'error' | 'warning';
+	severityClass: 'error' | 'warning';
 	message: string;
 	action?: WebViewAction;
 	actionClass?: string;
@@ -187,7 +187,7 @@ async function getViewState(): Promise<ViewState> {
 	const git = gitApi();
 	if (!git) {
 		errors.push({
-			severitiy: 'error',
+			severityClass: 'error',
 			message: 'Git extension not found. Please install the Git extension to use Solar Space.'
 		});
 		return { text: '', language: 'plaintext', url, errors };
@@ -196,7 +196,7 @@ async function getViewState(): Promise<ViewState> {
 	const workspaceFolder = await getWorkspaceFolder();
 	if (!workspaceFolder) {
 		errors.push({
-			severitiy: 'error',
+			severityClass: 'error',
 			message: 'No workspace folder selected.'
 		});
 		return { text: '', language: 'plaintext', url, errors };
@@ -205,7 +205,7 @@ async function getViewState(): Promise<ViewState> {
 	const repository = await getGitRepository(git, workspaceFolder);
 	if (!repository) {
 		errors.push({
-			severitiy: 'error',
+			severityClass: 'error',
 			message: 'No Git repository found in the workspace folder',
 			action: 'Initialize Repository',
 			actionClass: 'codicon-repo'
@@ -216,7 +216,7 @@ async function getViewState(): Promise<ViewState> {
 	const remote = await getRemoteOrigin(repository);
 	if (!remote) {
 		errors.push({
-			severitiy: 'error',
+			severityClass: 'error',
 			message: 'No linked repository found. Please link the remote origin to GitHub.',
 			action: 'Add Remote',
 			actionClass: 'codicon-repo'
@@ -227,7 +227,7 @@ async function getViewState(): Promise<ViewState> {
 	const hasWorkingTreeChanges_ = await hasWorkingTreeChanges(repository);
 	if (hasWorkingTreeChanges_) {
 		errors.push({
-			severitiy: 'warning',
+			severityClass: 'warning',
 			message: 'You have uncommitted changes. These will not be shared unless you commit and push them first.',
 			action: 'Commit',
 			actionClass: 'codicon-check'
@@ -237,7 +237,7 @@ async function getViewState(): Promise<ViewState> {
 	const hasUnpushedChanges_ = await hasUnpushedChanges(repository);
 	if (hasUnpushedChanges_) {
 		errors.push({
-			severitiy: 'warning',
+			severityClass: 'warning',
 			message: 'You have unpushed changes. These will not be shared unless you push them first.',
 			action: 'Push',
 			actionClass: 'codicon-cloud-upload'
@@ -247,7 +247,7 @@ async function getViewState(): Promise<ViewState> {
 	url = await generateSolarSpaceUrl(git, workspaceFolder);
 	if (!url) {
 		errors.push({
-			severitiy: 'error',
+			severityClass: 'error',
 			message: 'Failed to generate Solar Space URL.'
 		});
 	}

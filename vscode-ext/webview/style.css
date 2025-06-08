@@ -14,24 +14,26 @@ body {
   padding-top: 32px;
   display: flex;
   flex-flow: column;
-  align-items: center;
+  align-items: stretch;
+  max-width: 50rem;
   font-variant-ligatures: var(--ligatures);
   font-feature-settings: var(--font-features);
   tab-size: var(--tab-size);
   user-select: none;
 }
 #snippet-scroll {
+  display: flex;
   max-width: 100%;
   overflow-x: scroll;
-  margin: auto;
   position: relative;
 }
 #snippet-container {
   display: flex;
+  flex-grow: 1;
   justify-content: center;
   align-items: center;
   padding: var(--container-padding);
-  background-color: var(--container-background-color);
+  background-color: var(--vscode-input-background);
   width: max-content;
 }
 #window {
@@ -163,12 +165,17 @@ button:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  color: var(--vscode-editorWarning-foreground);
-  background-color: var(--vscode-editorWarning-background);
-  border: 1px solid var(--vscode-editorWarning-foreground);
+  color: var(--vscode-editor-foreground);
+  border: 1px solid var(--vscode-editor-foreground);
   padding: 0.5rem 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 2rem;
   gap: 1rem;
+}
+.notification.warning .codicon-alert { 
+  color: var(--vscode-editorWarning-foreground);
+}
+.notification.error .codicon-alert {
+  color: var(--vscode-editorError-foreground);
 }
 
 #solar-space-url-container {
@@ -180,12 +187,14 @@ button:hover {
 #image-action-container {
   display: flex;
   align-items: center;
+  justify-content: end;;
   gap: 1rem;
 }
 
 output {
   display: flex;
   align-items: center;
+  flex-grow: 1;
   background-color: var(--vscode-input-background);
   color: var(--vscode-input-foreground);
   border: 1px solid var(--vscode-input-border);
