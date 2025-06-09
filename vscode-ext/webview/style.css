@@ -27,6 +27,7 @@ body {
   max-width: 100%;
   overflow-x: scroll;
   position: relative;
+  margin-bottom: 1rem;
 }
 #snippet-container {
   display: flex;
