@@ -233,7 +233,7 @@ async function getViewState(): Promise<ViewState> {
 			severityClass: 'error',
 			message: 'No linked repository found. Please link the remote origin to GitHub.',
 			action: 'Publish Branch',
-			actionClass: 'codicon-repo'
+			actionClass: 'codicon-cloud-upload'
 		});
 		return state;
 	}
