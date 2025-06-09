@@ -194,6 +194,9 @@ async function getViewState(): Promise<ViewState> {
 	const errors: ErrorViewState[] = [];
     const editor = vscode.window.activeTextEditor || vscode.window.visibleTextEditors[0];
     const selection = editor?.selection;
+	const text = editor?.document.getText(selection) || editor?.document.getText() || '';
+	const language = editor?.document.languageId ?? 'plaintext';
+	const state : ViewState = { text, language, url, errors };
 
 	const git = gitApi();
 	if (!git) {
@@ -201,7 +204,7 @@ async function getViewState(): Promise<ViewState> {
 			severityClass: 'error',
 			message: 'Git extension not found. Please install the Git extension to use Solar Space.'
 		});
-		return { text: '', language: 'plaintext', url, errors };
+		return state;
 	}
 
 	const workspaceFolder = await getWorkspaceFolder();
@@ -210,7 +213,7 @@ async function getViewState(): Promise<ViewState> {
 			severityClass: 'error',
 			message: 'No workspace folder selected.'
 		});
-		return { text: '', language: 'plaintext', url, errors };
+		return state;
 	}
 
 	const repository = await getGitRepository(git, workspaceFolder);
@@ -221,7 +224,7 @@ async function getViewState(): Promise<ViewState> {
 			action: 'Initialize Repository',
 			actionClass: 'codicon-repo'
 		});
-		return { text: '', language: 'plaintext', url, errors };
+		return state;
 	}
 
 	const remote = await getRemoteOrigin(repository);
@@ -232,7 +235,7 @@ async function getViewState(): Promise<ViewState> {
 			action: 'Publish Branch',
 			actionClass: 'codicon-repo'
 		});
-		return { text: '', language: 'plaintext', url, errors };
+		return state;
 	}
 
 	const hasWorkingTreeChanges_ = await hasWorkingTreeChanges(repository);
@@ -263,12 +266,7 @@ async function getViewState(): Promise<ViewState> {
 		});
 	}
 
-    const state: ViewState = {
-        text: editor?.document.getText(selection) || editor?.document.getText() || '',
-        language: editor?.document.languageId ?? 'plaintext',
-		url: url,
-		errors: errors
-    };
+    state.url = url;
     return state;
 }
 
