@@ -44,7 +44,8 @@ const extensionConfig = {
   plugins: [
     new CopyPlugin({
       patterns: [
-        { from: path.resolve(__dirname, 'webview/dist'), to: path.resolve(__dirname, 'dist/webview') }
+        { from: path.resolve(__dirname, 'webview/dist'), to: path.resolve(__dirname, 'dist/webview') },
+        { from: path.resolve(__dirname, 'webview/index.html'), to: path.resolve(__dirname, 'dist/webview/index.html') },
       ],
     }),
   ],

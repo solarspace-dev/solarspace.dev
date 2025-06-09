@@ -11,8 +11,9 @@ export default defineConfig({
     assetsInlineLimit: () => true,
     cssCodeSplit: false,
     rollupOptions: {
-      input: './index.html',
+      input: './src/index.ts',
       output: {
+        format: 'iife',          // ← use IIFE format for webview
         entryFileNames: 'index.js',       // ← force output file name
         manualChunks: undefined,  // ← disables code splitting
         assetFileNames: '[name][extname]',
