@@ -3,7 +3,7 @@
   "publisher": "solarspace",
   "displayName": "Solar Space",
   "description": "Sharable URLs for GitHub codespaces",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "license": "GPL-3.0-only",
   "engines": {
     "vscode": "^1.90.0"
@@ -36,7 +36,7 @@
     "build": "npm run build:webview && npm run build:ext",
     "compile": "webpack",
     "watch": "webpack --watch",
-    "package": "webpack --mode production --devtool hidden-source-map",
+    "package": "npm run build:webview && webpack --mode production --devtool hidden-source-map",
     "compile-tests": "tsc -p . --outDir out",
     "watch-tests": "tsc -p . -w --outDir out",
     "pretest": "npm run compile-tests && npm run compile && npm run lint",
@@ -51,6 +51,7 @@
     "@typescript-eslint/parser": "^8.7.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
+    "copy-webpack-plugin": "^13.0.0",
     "eslint": "^9.13.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.3",

@@ -282,11 +282,16 @@ async function createPanel (context: vscode.ExtensionContext): Promise<vscode.We
         },
         {
             enableScripts: true,
-            localResourceRoots: [vscode.Uri.file(context.extensionPath)]
+            localResourceRoots: [
+				vscode.Uri.file(context.extensionPath),
+				vscode.Uri.file(path.join(context.extensionPath, 'dist')),
+				vscode.Uri.file(path.join(context.extensionPath, 'dist', 'webview')),
+			]
         }
     );
     panel.webview.html = await readHtml(
-        path.resolve(context.extensionPath, 'webview/index.html'),
+		context,
+        path.resolve(context.extensionPath, 'dist/webview/index.html'),
         panel
     );
     return panel;
@@ -303,10 +308,10 @@ async function saveImage (data: string): Promise<void> {
     }
 }
 
-async function readHtml (htmlPath: string, panel: vscode.WebviewPanel): Promise<string> {
+async function readHtml(context: vscode.ExtensionContext, htmlPath: string, panel: vscode.WebviewPanel): Promise<string> {
     const template = await readFile(htmlPath, 'utf-8');
-    const mainCss = panel.webview.asWebviewUri(vscode.Uri.file(path.resolve(htmlPath, '../dist/style.css')));
-    const mainJs = panel.webview.asWebviewUri(vscode.Uri.file(path.resolve(htmlPath, '../dist/index.js')));
+	const mainCss = panel.webview.asWebviewUri(vscode.Uri.file(path.resolve(context.extensionPath, 'dist/webview/style.css')));
+const mainJs = panel.webview.asWebviewUri(vscode.Uri.file(path.resolve(context.extensionPath, 'dist/webview/index.js')));
     const html = template
         .replace(/%CSP_SOURCE%/gu, panel.webview.cspSource)
         .replace('./style.css', mainCss.toString())
