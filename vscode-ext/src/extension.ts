@@ -315,7 +315,7 @@ const mainJs = panel.webview.asWebviewUri(vscode.Uri.file(path.resolve(context.e
     const html = template
         .replace(/%CSP_SOURCE%/gu, panel.webview.cspSource)
         .replace('./style.css', mainCss.toString())
-        .replace('./src/index.ts', mainJs.toString());
+        .replace('./index.js', mainJs.toString());
     return html;
 }
 

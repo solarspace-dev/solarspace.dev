@@ -1,3 +1,5 @@
+import '../style.css'; // Imported so vite can process it
+
 import { $ } from './util.js';
 import { takeSnap } from './snap.js';
 import { createHighlighterCore } from 'shiki';

@@ -3,7 +3,7 @@
   "publisher": "solarspace",
   "displayName": "Solar Space",
   "description": "Sharable URLs for GitHub codespaces",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "license": "GPL-3.0-only",
   "engines": {
     "vscode": "^1.90.0"
