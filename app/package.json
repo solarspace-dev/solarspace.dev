@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
     "build:frontend": "cd ./solid && npm ci --legacy-peer-deps && npm run build",
-    "build": "tsc",
+    "build:backend": "tsc",
+    "build:vscode": "node build/vscode.js",
+    "build": "npm run build:frontend && npm run build:vscode && npm run build:backend",
     "start": "node dist/index.js"
   },
   "keywords": [],
@@ -13,13 +15,13 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@solarspace-dev/vscode-web": "1.100.0-solarspace.0",
     "express": "^4.21.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
     "@types/node": "^22.13.13",
     "ts-node-dev": "^2.0.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "tar": "7.4.3"
   }
 }

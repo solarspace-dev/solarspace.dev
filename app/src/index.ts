@@ -8,7 +8,8 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 const LANDING_PAGE_DIST = path.join(__dirname, "../solid/dist");
-const VSCODE_DIST_DIR = path.join(__dirname, "../node_modules/@solarspace-dev/vscode-web/dist");
+
+const VSCODE_DIST_DIR = path.join(__dirname, "../vscode-web");
 const VSCODE_ETH_CLONE_DIST_DIR = path.join(__dirname, "../eth-clone");
 
 // Landing Page
