@@ -1,0 +1,3 @@
+[submodule "app/eth-clone"]
+	path = app/eth-clone
+	url = https://github.com/solarspace-dev/vscode-eth-clone.git

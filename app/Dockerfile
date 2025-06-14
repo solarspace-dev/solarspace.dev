@@ -7,8 +7,11 @@ WORKDIR /usr/src/app
 # Copy package.json and package-lock.json
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+ARG GITHUB_TOKEN
+RUN echo "@solarspace-dev:registry=https://npm.pkg.github.com" >> .npmrc \
+ && echo "//npm.pkg.github.com/:_authToken=${GITHUB_TOKEN}" >> .npmrc \
+ && npm ci \
+ && rm .npmrc
 
 # Copy the rest of the application code
 COPY . .

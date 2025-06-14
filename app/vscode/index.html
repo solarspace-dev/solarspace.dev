@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+
+		<!-- Mobile tweaks -->
+		<meta name="mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-title" content="Code">
+		<link rel="apple-touch-icon" href="/code-192.png" />
+
+		<!-- Disable pinch zooming -->
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+
+		<!-- Workbench Icon/Manifest/CSS -->
+		<link rel="icon" href="{{WORKBENCH_WEB_BASE_URL}}/favicon.ico" type="image/x-icon" />
+		<link rel="manifest" href="{{WORKBENCH_WEB_BASE_URL}}/manifest.json">
+		<link data-name="vs/workbench/workbench.web.main" rel="stylesheet" href="{{WORKBENCH_WEB_BASE_URL}}/out/vs/workbench/workbench.web.main.css">
+
+	</head>
+
+	<body aria-label="">
+	</body>
+
+	<!-- Startup (do not modify order of script tags!) -->
+	<script>
+		const baseUrl = new URL('{{WORKBENCH_WEB_BASE_URL}}', window.location.origin);
+		globalThis._VSCODE_FILE_ROOT = `${baseUrl}/out/`;
+		const product = {
+			"productConfiguration": {
+				"nameShort": "Solarspace",
+				"nameLong": "Solarspace",
+				"applicationName": "solarspace",
+				"dataFolderName": ".solarspace",
+				"version": "1.101.0",
+				"extensionsGallery": {
+					"serviceUrl": "https://open-vsx.org/vscode/gallery",
+					"itemUrl": "https://open-vsx.org/vscode/item",
+					"resourceUrlTemplate": "https://openvsxorg.blob.core.windows.net/resources/{publisher}/{name}/{version}/{path}"
+				},
+				"extensionEnabledApiProposals": {}
+			},
+			"additionalBuiltinExtensions": [
+				{
+					"scheme": baseUrl.protocol.replace(':', ''),
+					"authority": baseUrl.host,
+					"path": '/vscode-eth-clone',
+				}
+			],
+			"folderUri": {
+				"scheme": "tmp",
+				"path": "/",
+				"query": `location=${encodeURIComponent(window.location.href)}`,
+			}
+		};
+		const meta = document.createElement('meta');
+		meta.id = "vscode-workbench-web-configuration";
+		meta.setAttribute("data-settings", JSON.stringify(product));
+		document.head.appendChild(meta);
+	</script>
+	<script type="module" src="{{WORKBENCH_WEB_BASE_URL}}/out/nls.messages.js"></script>
+	<script type="module" src="{{WORKBENCH_WEB_BASE_URL}}/out/vs/code/browser/workbench/workbench.js"></script>
+</html>
