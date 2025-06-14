@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node-dev --respawn src/index.ts",
+    "build:frontend": "cd ./solid && npm ci --legacy-peer-deps && npm run build",
     "build": "tsc",
     "start": "node dist/index.js"
   },
@@ -12,15 +13,11 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@octokit/oauth-app": "^7.1.6",
     "@solarspace-dev/vscode-web": "1.100.0-solarspace.0",
-    "express": "^4.21.2",
-    "express-session": "^1.18.1",
-    "octokit": "^4.1.2"
+    "express": "^4.21.2"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
-    "@types/express-session": "^1.18.1",
     "@types/node": "^22.13.13",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.8.2"
