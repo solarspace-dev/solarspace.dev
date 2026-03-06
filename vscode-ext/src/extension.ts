@@ -186,7 +186,7 @@ async function generateSolarSpaceUrl(git: API, workspaceFolder: vscode.Workspace
 	}
 
 	const [_, owner, repoName] = match;
-	return `https://solarspace.dev/github/${owner}/${repoName}`;
+	return `https://codespaces.new/${owner}/${repoName}`;
 }
 
 async function getViewState(): Promise<ViewState> {
