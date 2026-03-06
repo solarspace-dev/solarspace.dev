@@ -10,7 +10,7 @@ All notable changes to the "solarcode" extension will be documented in this file
 
 ## [0.0.10] - 2025/09/06
 
-- Bugfix: The previous version with bundled incorrectly missing important resources.
+- Bugfix: The previous version was bundled incorrectly, missing important resources.
   This update includes all necessary files for the extension to function properly.
 
 ## [0.0.11] - 2025/09/06
