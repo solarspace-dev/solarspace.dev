@@ -3,7 +3,7 @@
   "publisher": "solarspace",
   "displayName": "Solar Space",
   "description": "Sharable URLs for GitHub codespaces",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "license": "GPL-3.0-only",
   "engines": {
     "vscode": "^1.90.0"
@@ -51,7 +51,7 @@
     "@typescript-eslint/parser": "^8.7.0",
     "@vscode/test-cli": "^0.0.10",
     "@vscode/test-electron": "^2.4.1",
-    "copy-webpack-plugin": "^13.0.0",
+    "copy-webpack-plugin": "^14.0.0",
     "eslint": "^9.13.0",
     "ts-loader": "^9.5.1",
     "typescript": "^5.6.3",
