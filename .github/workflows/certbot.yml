@@ -23,5 +23,5 @@ jobs:
             export DOMAIN_NAME=${{ vars.DOMAIN_NAME }}
             export EMAIL_ADDRESS=${{ vars.EMAIL_ADDRESS }}
             docker compose --profile manual run certbot || true
-            docker exec nginx nginx -s reload
+            docker compose restart nginx
           EOF

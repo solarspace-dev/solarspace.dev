@@ -20,4 +20,4 @@ LINK_CERT_DIR="/etc/letsencrypt/use/${DOMAIN_NAME}"
 echo "Switching symlink to real certificate..."
 ln -sfn "$REAL_CERT_DIR" "$LINK_CERT_DIR"
 
-echo "Certbot finished. Please run: docker exec nginx nginx -s reload"
+echo "Certbot finished. If running manually, restart nginx with: docker compose restart nginx"
